@@ -147,56 +147,65 @@
         const BASE_ID = 'apptblhK3igrvEVTZBPT';
         const TABLE_NAME = 'users';
 
-        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const fullName = formData.get('fullName');
-            const email = formData.get('email');
-            const file = formData.get('slip');
+document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const formData = new FormData(e.target);
+  const fullName = formData.get('fullName');
+  const email = formData.get('email');
+  const file = formData.get('slip');
 
-            try {
-                // อัพโหลดไฟล์
-const fileUploadResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/files`, { // เปลี่ยนเป็น /files
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${AIRTABLE_TOKEN}`,
-    'Content-Type': file.type
-  },
-  body: file
+  try {
+    // 1. อัปโหลดไฟล์
+    const uploadHeaders = new Headers();
+    uploadHeaders.append('Authorization', `Bearer ${AIRTABLE_TOKEN}`);
+    uploadHeaders.append('Content-Type', file.type);
+
+    const uploadResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/files`, {
+      method: 'POST',
+      headers: uploadHeaders,
+      body: file
+    });
+    
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      throw new Error(`อัปโหลดไฟล์ล้มเหลว: ${error.error.message}`);
+    }
+    
+    const { url } = await uploadResponse.json();
+
+    // 2. ส่งข้อมูล
+    const dataHeaders = new Headers();
+    dataHeaders.append('Authorization', `Bearer ${AIRTABLE_TOKEN}`);
+    dataHeaders.append('Content-Type', 'application/json');
+
+    const dataBody = JSON.stringify({
+      fields: {
+        "ชื่อ-สกุล": fullName,
+        "อีเมล": email,
+        "สลิป": [{ url }]
+      }
+    });
+
+    const dataResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+      method: 'POST',
+      headers: dataHeaders,
+      body: dataBody
+    });
+
+    if (!dataResponse.ok) {
+      const error = await dataResponse.json();
+      throw new Error(`บันทึกข้อมูลล้มเหลว: ${error.error.message}`);
+    }
+
+    alert('สำเร็จ! ตรวจสอบข้อมูลใน Airtable ได้เลย');
+    e.target.reset();
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert(`เกิดข้อผิดพลาด: ${error.message}`);
+  }
 });
-
-const { url } = await fileUploadResponse.json();
-                
-                const { url } = await fileUploadResponse.json();
-
-                // ส่งข้อมูล
-                const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fields: {
-                  "ชื่อ-สกุล": fullName,
-                  "อีเมล": email,
-                  "สลิป": [{ url }]
-                        }
-                    })
-                });
-
-                if (response.ok) {
-                    alert('บันทึกข้อมูลสำเร็จ!');
-                    e.target.reset();
-                } else {
-                    throw new Error('ส่งข้อมูลไม่สำเร็จ');
-                }
-            } catch (error) {
-                console.error('เกิดข้อผิดพลาด:', error);
-                alert('เกิดข้อผิดพลาด: ' + error.message);
-            }
-        });
     </script>
 </body>
 </html>
