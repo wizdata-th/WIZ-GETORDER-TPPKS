@@ -157,13 +157,16 @@
 
             try {
                 // อัพโหลดไฟล์
-                const fileUploadResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/files`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_TOKEN}`,
-                    },
-                    body: file
-                });
+const fileUploadResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/files`, { // เปลี่ยนเป็น /files
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${AIRTABLE_TOKEN}`,
+    'Content-Type': file.type
+  },
+  body: file
+});
+
+const { url } = await fileUploadResponse.json();
                 
                 const { url } = await fileUploadResponse.json();
 
