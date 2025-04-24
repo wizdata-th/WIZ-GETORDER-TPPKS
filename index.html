@@ -1,211 +1,892 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบฟอร์มสมัครสมาชิก</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <base target="_top">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="HandheldFriendly" content="true">
+    <title>WIZDATA ORDER</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --primary-color: #7209b7;
+            --secondary-color: #3a0ca3;
+            --accent-color: #e7e958; /* Original accent color */
+            --price-badge-bg: #8f3aff; /* A purple that might look better on dark bg */
+            --text-color: #fff;
+            --form-bg: rgba(255, 255, 255, 0.92);
+            --label-color: #3b0446;
+            --error-color: #e63946;
+            --success-color: #2a9d8f;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+            --transition: all 0.3s ease;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: #f8f9ff;
-            min-height: 100vh;
+            margin: 0;
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background-attachment: fixed;
+            color: var(--text-color);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px 15px;
+            line-height: 1.5;
         }
 
-        .form-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(109, 40, 217, 0.1);
-            padding: 40px;
+        .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .form-title {
-            color: #6D28D9;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .input-group {
-            margin-bottom: 24px;
-        }
-
-        .input-label {
+        .logo {
+            max-width: 140px;
+            margin: 0 auto 15px;
             display: block;
-            color: #444;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
         }
 
-        .input-field {
+        .name-row {
+            display: flex;
+            gap: 15px;
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
         }
 
-        .input-field:focus {
-            border-color: #6D28D9;
-            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+        .fullname-group {
+            flex: 2;
+        }
+
+        .nickname-group {
+            flex: 1.5;
+            min-width: 120px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            max-width: 100%;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        form {
+            background-color: var(--form-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--box-shadow);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--label-color);
+            font-size: clamp(0.95rem, 3vw, 1.05rem);
+        }
+
+        label i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        label small {
+            font-weight: 300;
+            opacity: 0.9;
+            margin-left: 5px;
+            font-style: normal;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px; /* Adjusted margin top for better spacing */
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: clamp(0.95rem, 3vw, 1.05rem);
+            background-color: white;
+            color: #333;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        input::placeholder {
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        input:hover, select:hover,
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(114, 9, 183, 0.2);
             outline: none;
         }
 
-        .file-upload {
-            border: 2px dashed #e0e0e0;
-            border-radius: 8px;
+        button {
+            background: var(--accent-color); /* Using accent color for button */
+            color: #000; /* Black text on accent color */
+            border: none;
+            padding: 14px 20px;
+            margin-top: 25px;
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Prompt', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: var(--primary-color); /* Primary color on hover */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+            background: var(--secondary-color); /* Secondary color on active */
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        button i {
+            margin-right: 10px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            max-width: 100%;
+            line-height: 1.6;
+        }
+
+        .custom-file-upload {
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
             padding: 20px;
             text-align: center;
             cursor: pointer;
+            background: #f8f9fa;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #555;
         }
 
-        .submit-btn {
-            background: #6D28D9;
-            color: white;
-            padding: 16px;
-            width: 100%;
-            border: none;
+        .custom-file-upload:hover {
+            border-color: var(--primary-color);
+            background: #f0f0f0;
+        }
+
+        .custom-file-upload i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #555;
+            word-break: break-word;
+            max-width: 100%;
+            display: none; /* Hidden by default */
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        #redeemDisplay {
+            margin-top: 10px;
+            font-weight: 500;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            padding: 10px 12px;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background-color: rgba(255,255,255,0.9);
+            display: none;
+            animation: fadeIn 0.3s ease;
+            word-break: break-word; /* Ensure text wraps */
         }
 
-        .submit-btn:hover {
-            background: #5B21B6;
+        .divider {
+            margin: 25px 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            box-shadow: 0 2px 4px rgba(114, 9, 183, 0.2);
+        }
+
+        .package-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .package-image:hover {
+            transform: scale(1.02);
+        }
+
+        #starterPackageLabel {
+            background-color: rgba(114, 9, 183, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            color: var(--label-color); /* Adjusted color for readability on light bg */
+            font-weight: 500;
+            text-align: center;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary-color);
+            word-break: break-word; /* Ensure text wraps */
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column; /* Stack spinner and text */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-overlay > * {
+            pointer-events: none; /* Prevent interaction with underlying elements */
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px; /* Space between spinner and text */
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        /* Styles for redeem and price */
+        .redeem-price-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start; /* Align items to the top */
+        }
+
+        .redeem-group {
+            flex: 2;
+        }
+
+        .price-badge {
+            flex: 0.5;
+            background-color: var(--price-badge-bg); /* Using defined price badge color */
+            border-radius: var(--border-radius);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: rgb(255, 255, 255);
+            animation: fadeIn 0.3s ease;
+            min-width: 120px;
+            transition: all 0.3s ease;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+
+        .price-badge .price-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 3px;
+            font-weight: 400; /* Slightly lighter weight for label */
+        }
+
+        .price-badge .price-value {
+            font-size: 1.6rem; /* Slightly larger price value */
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .price-badge .price-currency {
+            font-size: 1rem; /* Slightly larger currency */
+            margin-left: 2px;
+            font-weight: 600;
+        }
+
+        .price-changed {
+            animation: pulse 0.5s ease;
+        }
+
+        /* SweetAlert2 Custom Styling */
+        .swal-custom-popup {
+            font-family: 'Prompt', sans-serif !important;
+        }
+         /* Add more custom styles here if needed, e.g., for title, content, buttons */
+
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Tablet and Desktop specific styles */
+        @media (min-width: 768px) {
+            body {
+                padding: 40px 20px;
+            }
+
+            form {
+                padding: 35px;
+            }
+
+            button {
+                padding: 16px 24px;
+            }
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            .name-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .fullname-group,
+            .nickname-group {
+                flex: none;
+                width: 100%;
+            }
+
+            .redeem-price-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .redeem-group,
+            .price-badge {
+                flex: none;
+                width: 100%;
+            }
+
+            form {
+                padding: 25px 20px;
+            }
+
+            input, select {
+                padding: 12px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 400px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            form {
+                padding: 20px 15px;
+            }
+
+            button {
+                padding: 14px 15px;
+                margin-top: 20px;
+            }
+        }
+
+        /* Landscape orientation for mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 15px;
+            }
+
+            form {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            .name-row,
+            .redeem-price-container {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .fullname-group,
+            .nickname-group,
+            .redeem-group,
+            .price-badge {
+                 width: auto; /* Allow flex to manage width */
+                 flex-basis: auto; /* Allow flex to manage basis */
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="form-card">
-        <div class="form-header">
-            <h1 class="form-title">สมัครสมาชิก</h1>
-            <p class="form-subtitle">กรุณากรอกข้อมูลให้ครบถ้วน</p>
-        </div>
-        
-        <form id="registrationForm">
-            <div class="input-group">
-                <label class="input-label">ชื่อ-สกุล</label>
-                <input type="text" 
-                       class="input-field" 
-                       name="fullName" 
-                       placeholder="สมชาย ใจดี"
-                       required>
-            </div>
+    <div class="container">
+        <h1>ยืนยันการสั่งซื้อ</h1>
+        <p> ไฟล์ Branding & Marketing Template" จาก Wizdata</p>
 
-            <div class="input-group">
-                <label class="input-label">อีเมล</label>
-                <input type="email" 
-                       class="input-field" 
-                       name="email" 
-                       placeholder="example@mail.com"
-                       required>
-            </div>
+        <form id="myForm">
+            <div class="name-row">
+                <div class="fullname-group form-group">
+                    <label for="name"><i class="fas fa-user"></i>Full Name<small>ชื่อเต็มของคุณ</small></label>
+                    <input type="text" id="name" name="name" placeholder="กรอกชื่อจริง-นามสกุล" required>
+                </div>
 
-            <div class="input-group">
-                <label class="input-label">แนบสลิป</label>
-                <div class="file-upload">
-                    <input type="file" 
-                           name="slip" 
-                           accept="image/*" 
-                           required
-                           style="display: none;" 
-                           id="fileInput">
-                    <label for="fileInput" style="cursor: pointer;">
-                        <span style="color: #6D28D9;">คลิกเพื่ออัพโหลดไฟล์</span> (.jpg, .png)
-                    </label>
+                <div class="nickname-group form-group">
+                    <label for="nickname"><i class="fas fa-smile"></i>Nickname<small>ชื่อเล่น</small> </label>
+                    <input type="text" id="nickname" name="nickname" placeholder="(ไม่บังคับ)">
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">ส่งข้อมูล</button>
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i>Phone Number<small>เบอร์โทรติดต่อ</small></label>
+                <input type="tel" id="phone" name="phone" placeholder="08x-xxxx-xxxx" pattern="[0-9]{10}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birthdate"><i class="fas fa-calendar"></i>Birth Date<small>วัน/เดือน/ปีเกิด</small></label>
+                <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email<small>อีเมลที่คุณจะใช้รับไฟล์</small></label>
+                <input type="email" id="email" name="email" placeholder="example.name@domain.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="careerSelect"><i class="fas fa-briefcase"></i> Your Career<small>อาชีพของคุณ</small></label>
+                <select name="career" id="careerSelect" required>
+                    <option value="">เลือกอาชีพ...</option>
+                    <option value="Solopreneur">Solopreneur</option>
+                    <option value="Entrepreneur">Entrepreneur</option>
+                    <option value="Employee">Employee</option>
+                    <option value="Corporate">Corporate</option>
+                    <option value="Freelancer">Freelancer</option>
+                    <option value="Student">Student</option>
+                    <option value="Other">Other (อื่น ๆ)</option>
+                </select>
+            </div>
+
+            <hr class="divider">
+
+            <img src="https://i.imgur.com/ac7HOLW.png" 
+            class="package-image" alt="WIZDATA Starter Package">
+
+            <div id="starterPackageLabel">คุณต้องการสั่งซื้อ Template การตลาด และแบรนด์ แพคเกจ Starter - เพื่อเพิ่มความเฉียบคมให้ธุรกิจ!</div>
+
+            <div class="redeem-price-container">
+                <div class="redeem-group form-group">
+                    <label for="redeemcode"><i class="fas fa-ticket-alt"></i>Redeem Code<small>กรอกโค้ดส่วนลด</small></label>
+                    <div class="input-wrapper">
+                        <input type="text" name="redeemcode" id="redeemcode" placeholder="(ถ้ามี)" />
+                    </div>
+                    <div id="redeemDisplay" class="file-name"></div> </div>
+                </div>
+                <div class="price-badge" id="priceBadge">
+                    <div class="price-label">ราคาสินค้า</div>
+                    <div>
+                        <span class="price-value">790</span>
+                        <span class="price-currency">บาท</span>
+                    </div>
+            </div>
+            <hr class="divider">
+
+            <img src="https://i.imgur.com/e0wfvjy.png"  class="package-image" alt="WIZDATA Starter Package">
+
+            <img src="https://i.imgur.com/CdqBrO7.png"            class="package-image" alt="WIZDATA Starter Package">
+
+            <div class="form-group">
+                <label><i class="fas fa-receipt"></i>Upload Payment Slip<small>แนบสลิป หรือหลักฐานการโอนตามราคาที่แสดงด้านบน</small></label>
+
+                <label for="file" class="custom-file-upload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>เลือกไฟล์หลักฐานการชำระเงิน</span>
+                    <span class="file-name" id="file-name-display">ยังไม่ได้อัปโหลดไฟล์</span>
+                </label>
+                <input type="file" name="file" id="file" accept="image/*,application/pdf" required /> </div>
+
+            <button type="submit" id="submitBtn"><i class="fas fa-paper-plane"></i> Confirm (ยืนยันการสั่งซื้อ)</button>
+
         </form>
-    </div>
 
-    <script>
-        // ตั้งค่า Airtable
-       const AIRTABLE_API_KEY = 'patCyKIDokqFL2yoG.833dcb69480736c2a100b5371f7caaf20fa83431267885726ac27411d6c9382f';
-        const BASE_ID = 'apptblhK3igrvEVTZBPT';
-        const TABLE_NAME = 'users';
+        <footer>
+            <i class="fas fa-lock"></i>
+           โดยการกดส่งข้อมูลนี้ ถือว่าท่านยินยอมให้เราเก็บข้อมูลเพื่อวัตถุประสงค์ทางการตลาด <div> </i> และทางเราจะเก็บข้อมูลของท่านไว้เป็นความลับค่ะ</div>
+        </footer>
 
-document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const formData = new FormData(e.target);
-  const fullName = formData.get('fullName');
-  const email = formData.get('email');
-  const file = formData.get('slip');
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <div class="loading-text">กำลังส่งข้อมูล...</div>
+        </div>
 
-  try {
-    // 1. อัปโหลดไฟล์
-    const uploadHeaders = new Headers();
-    uploadHeaders.append('Authorization', `Bearer ${AIRTABLE_TOKEN}`);
-    uploadHeaders.append('Content-Type', file.type);
+    </div> <script>
+        // Replace with your Google Apps Script Web App URL
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzjM_D1A5W5sugQNXVeRsyypiQHBWJJEQBz1fqjRH_jWlckSNVr99Ykxjr1HvyPc0Jn-g/exec';
 
-    const uploadResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/files`, {
-      method: 'POST',
-      headers: uploadHeaders,
-      body: file
-    });
-    
-    if (!uploadResponse.ok) {
-      const error = await uploadResponse.json();
-      throw new Error(`อัปโหลดไฟล์ล้มเหลว: ${error.error.message}`);
-    }
-    
-    const { url } = await uploadResponse.json();
+        // Get elements
+        const form = document.getElementById('myForm');
+        const nameElement = document.getElementById('name');
+        const nicknameElement = document.getElementById('nickname'); // Corrected variable name
+        const phoneElement = document.getElementById('phone');
+        const birthdateElement = document.getElementById('birthdate'); // Corrected variable name
+        const emailElement = document.getElementById('email');
+        const careerSelectElement = document.getElementById('careerSelect'); // Corrected variable name
+        const redeemInput = document.getElementById('redeemcode');
+        const redeemDisplay = document.getElementById('redeemDisplay');
+        const packageLabel = document.getElementById('starterPackageLabel');
+        const fileInput = document.getElementById('file'); // Corrected variable name
+        const fileNameDisplay = document.getElementById('file-name-display'); // Corrected variable name
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const priceBadge = document.getElementById('priceBadge');
+        const priceValueElement = priceBadge.querySelector('.price-value'); // Get the element displaying the price value
+        const submitBtn = document.getElementById('submitBtn');
+        const originalBtnText = submitBtn.innerHTML;
 
-    // 2. ส่งข้อมูล
-    const dataHeaders = new Headers();
-    dataHeaders.append('Authorization', `Bearer ${AIRTABLE_TOKEN}`);
-    dataHeaders.append('Content-Type', 'application/json');
+        let currentPrice = 790;
+        const basePrice = 790; // Define the base price
 
-    const dataBody = JSON.stringify({
-      fields: {
-        "ชื่อ-สกุล": fullName,
-        "อีเมล": email,
-        "สลิป": [{ url }]
-      }
-    });
+        // --- Loading Overlay Functions ---
+        const showLoading = () => {
+            loadingOverlay.classList.add('active');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังส่ง...'; // Indicate loading on button
+        };
 
-    const dataResponse = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
-      method: 'POST',
-      headers: dataHeaders,
-      body: dataBody
-    });
+        const hideLoading = () => {
+            loadingOverlay.classList.remove('active');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText; // Restore button text
+        };
 
-    if (!dataResponse.ok) {
-      const error = await dataResponse.json();
-      throw new Error(`บันทึกข้อมูลล้มเหลว: ${error.error.message}`);
-    }
+        // --- File Upload Preview ---
+        fileInput.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'ยังไม่ได้อัปโหลดไฟล์';
+            fileNameDisplay.textContent = fileName;
+            fileNameDisplay.style.display = fileName === 'ยังไม่ได้อัปโหลดไฟล์' ? 'none' : 'block';
+        });
 
-    alert('สำเร็จ! ตรวจสอบข้อมูลใน Airtable ได้เลย');
-    e.target.reset();
+        // --- Update Package Label and Price Display ---
+        function updatePackageInfo() {
+            const nickname = nicknameElement.value.trim();
 
-  } catch (error) {
-    console.error('Error:', error);
-    alert(`เกิดข้อผิดพลาด: ${error.message}`);
-  }
-});
+            // Update Package Label with Nickname
+            if (nickname) {
+                packageLabel.innerHTML = `<strong>คุณ ${nickname}</strong> ต้องการสั่งซื้อ Template การตลาด และแบรนด์ แพคเกจ Starter - เพิ่มความเฉียบคมให้ธุรกิจ!`;
+            } else {
+                packageLabel.innerHTML = `คุณต้องการสั่งซื้อ Template การตลาด และแบรนด์ แพคเกจ Starter - เพิ่มความเฉียบคมให้ธุรกิจ!`;
+            }
+
+            // Update Price Badge Value with Animation
+            if (priceValueElement.textContent !== String(currentPrice)) {
+                priceValueElement.textContent = currentPrice;
+                priceBadge.classList.remove('price-changed');
+                // Trigger reflow to restart animation
+                void priceBadge.offsetWidth;
+                priceBadge.classList.add('price-changed');
+            }
+        }
+
+        // --- Redeem Code Logic ---
+        redeemInput.addEventListener('input', function() {
+            const code = redeemInput.value.trim().toUpperCase();
+
+            // Reset display first
+            redeemDisplay.style.color = "";
+            redeemDisplay.style.backgroundColor = "";
+            redeemDisplay.style.display = "none"; // Hide by default
+
+            currentPrice = basePrice; // Reset price to base price
+
+            if (code === "WIZ100") {
+                 // Price remains basePrice (790) as code is expired
+                redeemDisplay.innerText = "🕒 โค้ดส่วนลด หมดอายุแล้ว!";
+                redeamDisplay.style.color = "white"; // Assuming white text looks good on gray
+                redeemDisplay.style.backgroundColor = "gray";
+                redeemDisplay.style.display = "block";
+            } else if (code === "WIZ50") {
+                currentPrice = basePrice - 50; // Apply discount
+                redeemDisplay.innerText = "🎁 รับส่วนลด 50 บาท!";
+                redeemDisplay.style.color = "white"; // Assuming white text looks good on success color
+                redeemDisplay.style.backgroundColor = "var(--success-color)";
+                redeemDisplay.style.display = "block";
+            } else if (code.length > 0) {
+                 // Code entered but not recognized
+                redeemDisplay.innerText = "❌ โค้ดไม่ถูกต้อง หรือยังไม่รองรับ";
+                redeemDisplay.style.color = "white"; // Assuming white text looks good on error color
+                redeemDisplay.style.backgroundColor = "var(--error-color)";
+                redeemDisplay.style.display = "block";
+            }
+            // If code is empty, redeemDisplay remains hidden and price is basePrice
+
+            updatePackageInfo(); // Update the displayed price and label
+        });
+
+        // --- Form Submission Handler ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            showLoading(); // Show loading overlay and disable button
+
+            const formData = new FormData(e.target);
+            const file = formData.get('file');
+
+            // File size check (5MB)
+            if (file.size > 5000000) {
+                hideLoading(); // Hide loading before showing alert
+                Swal.fire({
+                    title: 'ขนาดไฟล์เกินกำหนด',
+                    text: 'กรุณาเลือกไฟล์ขนาดไม่เกิน 5MB',
+                    icon: 'error',
+                    confirmButtonText: 'เข้าใจแล้ว',
+                    confirmButtonColor: 'var(--primary-color)'
+                });
+                return; // Stop the submission process
+            }
+
+            // Read file as Base64
+            const reader = new FileReader();
+
+            reader.onload = async () => {
+                const base64Data = reader.result.split(',')[1];
+
+                const payload = {
+                    name: formData.get('name'),
+                    nickname: formData.get('nickname'),
+                    phone: formData.get('phone'),
+                    birthdate: formData.get('birthdate'),
+                    email: formData.get('email'),
+                    career: formData.get('career'),
+                    redeemcode: formData.get('redeemcode') || '', // Send empty string if no code
+                    pricePaid: currentPrice, // Send the final price after discount
+                    file: base64Data,
+                    filename: file.name,
+                    mimeType: file.type
+                };
+
+                try {
+                    // Using fetch with no-cors for Google Apps Script
+                    // Note: In 'no-cors' mode, the client-side JS cannot read the actual response status or body.
+                    // Success is determined if the request *completes* without a network error.
+                    // Server-side errors within the Apps Script itself won't typically be caught here.
+                    const response = await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Required for cross-origin Apps Script
+                        headers: {
+                           'Content-Type': 'application/json' // Set header even in no-cors, though it's limited
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Because of 'no-cors', response.ok will always be false and status will be 0.
+                    // We have to assume success if fetch completes without throwing a network error.
+                    // A more robust solution requires a different server-side approach (e.g., JSONP, or a full CORS setup if possible).
+                    // For a simple Apps Script Web App, assuming success on completion is common.
+
+                    Swal.fire({
+                        title: "ขอบคุณสำหรับคำสั่งซื้อ",
+                        text: "ตรวจสอบการชำระเงินไม่เกิน 20-30 นาที คุณจะได้รับไฟล์ใน Email ของคุณ!",
+                        icon: "success",
+                        confirmButtonColor: "var(--primary-color)"
+                    });
+
+                    // Reset the form and state after successful "submission" (request completion)
+                    form.reset();
+                    fileNameDisplay.textContent = 'ยังไม่ได้อัปโหลดไฟล์';
+                    fileNameDisplay.style.display = 'none';
+                    redeemInput.value = ''; // Clear redeem input
+                    currentPrice = basePrice; // Reset price
+                    redeemDisplay.style.display = "none"; // Hide redeem status
+                    updatePackageInfo(); // Update label and price badge to initial state
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    // This catch block will primarily handle network errors or issues before the request is sent
+                    Swal.fire({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ส่งข้อมูลไม่สำเร็จ โปรดลองอีกครั้งในภายหลัง หรือติดต่อผู้ดูแลระบบ',
+                        icon: 'error',
+                        confirmButtonColor: 'var(--primary-color)'
+                    });
+                } finally {
+                    hideLoading(); // Always hide loading overlay and re-enable button
+                }
+            };
+
+            reader.onerror = function() {
+                hideLoading(); // Hide loading if file reading fails
+                 Swal.fire({
+                    title: 'ข้อผิดพลาดในการอ่านไฟล์',
+                    text: 'ไม่สามารถอ่านไฟล์สลิปได้ กรุณาลองใหม่อีกครั้ง',
+                    icon: 'error',
+                    confirmButtonColor: 'var(--primary-color)'
+                });
+            };
+
+
+            // Start reading the file
+            reader.readAsDataURL(file);
+        });
+
+        // --- Load SweetAlert2 Script Dynamically ---
+        const loadSweetAlert = () => {
+            return new Promise((resolve, reject) => {
+                if (typeof Swal !== 'undefined') {
+                    // SweetAlert is already loaded
+                    resolve();
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        };
+
+        // --- Initialize on DOM Content Loaded ---
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await loadSweetAlert();
+                // Custom styling for SweetAlert2 popup
+                if (typeof Swal !== 'undefined') {
+                     Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        icon: 'info',
+                        title: 'กำลังโหลด...',
+                         didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                         }
+                    });
+                    // SweetAlert2.init(); // This function doesn't exist, remove or replace
+                    // If you have specific custom styling, apply it here if not already in CSS
+                    // Example: document.head.insertAdjacentHTML('beforeend', '<style>.swal2-popup { font-family: \'Prompt\', sans-serif; }</style>');
+                }
+
+            } catch (error) {
+                console.error('Failed to load SweetAlert2:', error);
+                alert('Failed to load necessary scripts. Please try again.'); // Fallback alert
+            }
+
+             // Initial update of package info and price display
+            updatePackageInfo();
+
+            // Add event listener for nickname changes
+            nicknameElement.addEventListener('input', updatePackageInfo);
+
+            // Adjust date input for mobile usability
+            // Check if user agent suggests a mobile device
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                 // Ensure date input type is 'date' to trigger native picker
+                 birthdateElement.setAttribute('type', 'date');
+                 // On some mobile browsers, setting type='date' on focus is needed
+                 birthdateElement.addEventListener('focus', function() {
+                    this.type = 'date';
+                 });
+            } else {
+                 // For desktop, ensure it's always date if you want calendar icon
+                 birthdateElement.type = 'date';
+            }
+        });
+
     </script>
+
 </body>
 </html>
