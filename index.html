@@ -582,24 +582,128 @@
         transform: translateX(1);
     }
 }
+
+/* ตั้งค่าทั่วไปของ body */
+body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 43%;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 50px;
+            font-size: 1.5rem;
+            border-radius: 20%;
+            cursor: pointer;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-btn {
+         transition: background 0.3s ease, scale 0.3s ease;
+        }
+
+        .slider-btn:hover {
+         background: rgba(255, 255, 255, 0.15);
+        scale: 1.08;
+        }
+
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
+
+        .form-wrapper {
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px; /* เว้นระหว่าง slider กับ form */
+        }
+
+        .slider-container {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 
 <body>
 
-    <body>
-        <div>
-           <div class="wave"></div>
-           <div class="wave"></div>
-           <div class="wave"></div>
-        </div>
-      </body>
+<!-- Background FX -->
+    <div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+     </div>
 
+<!-- Header -->
     <div class="container">
         <h1>ยืนยันการสั่งซื้อ</h1>
         <p> ไฟล์ Branding & Marketing Template" จาก Wizdata</p>
+        </div>
 
+    <div class="form-wrapper">
+
+        <!-- SLIDER -->
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <img src="image (1).png" alt="Slide 1">
+                <img src="image (2).png" alt="Slide 2">
+                <img src="image (3).png" alt="Slide 3">
+                <img src="image (4).png" alt="Slide 4">
+            </div>
+            <button class="slider-btn prev" onclick="prevSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-btn next" onclick="nextSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Form -->
         <form id="myForm">
+
             <div class="name-row">
                 <div class="fullname-group form-group">
                     <label for="name"><i class="fas fa-user"></i>Full Name<small>ชื่อเต็มของคุณ</small></label>
@@ -693,7 +797,9 @@
             <div class="loading-text">กำลังส่งข้อมูล...</div>
         </div>
 
-    </div> <script>
+    </div> 
+    
+    <script>
         // Replace with your Google Apps Script Web App URL
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzjM_D1A5W5sugQNXVeRsyypiQHBWJJEQBz1fqjRH_jWlckSNVr99Ykxjr1HvyPc0Jn-g/exec';
 
@@ -718,6 +824,50 @@
 
         let currentPrice = 790;
         const basePrice = 790; // Define the base price
+
+        // --- Slider Functionality ---
+     // ตัวแปรและ DOM element
+    const slider = document.getElementById("slider");
+    const slides = slider.querySelectorAll("img");
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+
+    // ✅ 1. แสดงภาพตาม index
+    function showSlide(index) {
+    const slideWidth = slides[0].offsetWidth;  // ✅ แก้แล้ว
+    slider.style.transform = `translateX(-${slideWidth * index}px)`;
+    }
+
+    // ✅ 2. ย้อนกลับ
+     function prevSlide() {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      showSlide(currentIndex);
+     }
+
+    // ✅ 3. ไปข้างหน้า
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    }
+
+    // ✅ 4. เริ่ม Auto Slide
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(() => {
+          nextSlide();
+      }, 4000); // 4 วินาที
+    }
+
+    // ✅ 5. เรียกตอนโหลดหน้า
+     window.addEventListener("DOMContentLoaded", () => {
+      showSlide(currentIndex);  // เริ่มที่ slide 0
+      startAutoSlide();         // เริ่ม auto-slide
+    });
+
+  // ✅ 6. เวลา resize หน้าจอ ให้ปรับตำแหน่ง
+  window.addEventListener("resize", () => {
+      showSlide(currentIndex);
+  });
 
         // --- Loading Overlay Functions ---
         const showLoading = () => {
@@ -774,7 +924,7 @@
             if (code === "WIZ100") {
                  // Price remains basePrice (790) as code is expired
                 redeemDisplay.innerText = "🕒 โค้ดส่วนลด หมดอายุแล้ว!";
-                redeamDisplay.style.color = "white"; // Assuming white text looks good on gray
+                redeemDisplay.style.color = "white"; // Assuming white text looks good on gray
                 redeemDisplay.style.backgroundColor = "gray";
                 redeemDisplay.style.display = "block";
             } else if (code === "WIZ50") {
@@ -965,9 +1115,11 @@
                  // For desktop, ensure it's always date if you want calendar icon
                  birthdateElement.type = 'date';
             }
+
+        // เมื่อเปลี่ยนขนาดหน้าจอ ให้ปรับตำแหน่งภาพ
+        window.addEventListener("resize", () => showSlide(currentIndex));
+            
         });
-
     </script>
-
 </body>
 </html>
