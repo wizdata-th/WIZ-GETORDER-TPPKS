@@ -665,6 +665,77 @@ body {
         border-radius: 16px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
+
+    /* Countdown */    
+    .countdown-box {
+    background: #fff;
+    border: 2px solid #7209b7;
+    border-radius: 16px;
+    padding: 25px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+  }
+
+  .countdown-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #3a0ca3;
+    margin-bottom: 20px;
+  }
+
+  .timer-grid {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .time-box {
+    background: #8956ff;
+    color: #fff;
+    padding: 16px 10px;
+    border-radius: 12px;
+    width: 80px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  .time-box .number {
+    font-size: 1.6rem;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  .time-box .label {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    opacity: 0.9;
+  }
+
+  .countdown-subtext {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  /* Title Form */
+  .form-title-box {
+  background-color: rgba(255, 255, 255, 0.7); /* สีขาวจาง */
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--label-color); /* ใช้สีจากธีม */
+}
+
     </style>
 </head>
 
@@ -700,9 +771,37 @@ body {
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
+        
+        <!-- Countdown -->
+        <div class="countdown-box">
+            <div class="countdown-title">⏰ โค้ดส่วนลดหมดเวลาในคืนนี้ 23:59 น.</div>
+            <div class="timer-grid">
+              <div class="time-box">
+                <div class="number" id="days">0</div>
+                <div class="label">วัน</div>
+              </div>
+              <div class="time-box">
+                <div class="number" id="hours">0</div>
+                <div class="label">ชั่วโมง</div>
+              </div>
+              <div class="time-box">
+                <div class="number" id="minutes">0</div>
+                <div class="label">นาที</div>
+              </div>
+              <div class="time-box">
+                <div class="number" id="seconds">0</div>
+                <div class="label">วินาที</div>
+              </div>
+            </div>
+            <div class="countdown-subtext"> 💬 ต้องการรับโค้ดส่วนลด? แอดไลน์หรือทักหาแอดมินในแชทได้เลย!</div>
+          </div>
 
         <!-- Form -->
         <form id="myForm">
+            
+            <div class="form-title-box">
+                <div class="form-title">🛒 กรอกข้อมูลเพื่อยืนยันการสั่งซื้อ</div>
+              </div>
 
             <div class="name-row">
                 <div class="fullname-group form-group">
@@ -824,6 +923,36 @@ body {
 
         let currentPrice = 790;
         const basePrice = 790; // Define the base price
+
+        // --- Form Countdown ---
+        function startCountdownToMidnight() {
+        function updateCountdown() {
+        const now = new Date();
+        const midnight = new Date();
+        midnight.setHours(23, 59, 59, 999);
+        const timeLeft = midnight - now;
+
+        if (timeLeft <= 0) {
+        document.querySelector('.timer-grid').innerHTML = "⏰ หมดเวลาแล้ว!";
+        return;
+        }
+
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeLeft / 1000) % 60);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  window.addEventListener("DOMContentLoaded", startCountdownToMidnight);
 
         // --- Slider Functionality ---
      // ตัวแปรและ DOM element
@@ -1077,7 +1206,7 @@ body {
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 1200,
                         timerProgressBar: true,
                         icon: 'info',
                         title: 'กำลังโหลด...',
